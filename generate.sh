@@ -2,8 +2,10 @@
 
 docker build -t docker-rails-generator .
 
-read -p "Enter path for newly generated project [$PWD]: " NEW_APP_PATH
-NEW_APP_PATH=${NEW_APP_PATH:-$PWD}
+DEFAULT_PATH=${PWD%/*}
+
+read -p "Enter path for newly generated project [$DEFAULT_PATH]: " NEW_APP_PATH
+NEW_APP_PATH=${NEW_APP_PATH:-$DEFAULT_PATH}
 
 read -p "Enter name for your new app [myrailsapp]: " NEW_RAILS_APP
 NEW_RAILS_APP=${NEW_RAILS_APP:-myrailsapp}
