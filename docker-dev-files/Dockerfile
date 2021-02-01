@@ -22,6 +22,8 @@ RUN gem update bundler --no-document
 COPY ./Gemfile /app/Gemfile
 COPY ./.ruby-version /app/.ruby-version
 
+USER my-docker-user
+
 WORKDIR /app
 
 CMD ["/bin/bash"]
