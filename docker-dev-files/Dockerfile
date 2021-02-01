@@ -1,11 +1,14 @@
-FROM ruby:2.7
+FROM ruby:2.7.2-alpine3.13
 
 USER root
 
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get update -qq && apt-get install -y \
+RUN apk update \
+    && apk upgrade \
+    && apk add --update --no-cache \
+    build-base \
+    git \
+    sqlite-dev \
+    tzdata \
     nodejs \
     yarn
 
@@ -16,10 +19,12 @@ ENV BUNDLE_APP_CONFIG=$BUNDLE_PATH \
     BUNDLE_BIN=$BUNDLE_PATH/bin
 ENV PATH /app/bin:$BUNDLE_BIN:$PATH
 
+RUN yarn install
+
 RUN gem update --system --no-document
 RUN gem update bundler --no-document
 
-RUN useradd -ms /bin/bash unprivileged
+RUN addgroup -S unprivileged && adduser -S unprivileged -G unprivileged
 
 USER unprivileged
 
@@ -29,4 +34,4 @@ COPY --chown=unprivileged ./.ruby-version /app/.ruby-version
 
 WORKDIR /app
 
-CMD ["/bin/bash"]
+CMD ["/bin/sh"]
