@@ -19,10 +19,13 @@ ENV PATH /app/bin:$BUNDLE_BIN:$PATH
 RUN gem update --system --no-document
 RUN gem update bundler --no-document
 
-COPY ./Gemfile /app/Gemfile
-COPY ./.ruby-version /app/.ruby-version
+RUN useradd -ms /bin/bash unprivileged
 
-USER my-docker-user
+USER unprivileged
+
+# Switching 'USER' only works for: CMD, RUN, and ENTRYPOINT, for others use 'chown':
+COPY --chown=unprivileged ./Gemfile /app/Gemfile
+COPY --chown=unprivileged ./.ruby-version /app/.ruby-version
 
 WORKDIR /app
 
