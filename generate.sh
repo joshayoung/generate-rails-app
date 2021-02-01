@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 docker build -t docker-rails-generator .
 
@@ -17,7 +17,7 @@ cp -r ./docker-dev-files/* $NEW_APP_COMPLETE_PATH
 cd $NEW_APP_COMPLETE_PATH 
 docker-compose build
 docker-compose up -d
-docker exec -it --user root ${NEW_RAILS_APP}_dev_1 /bin/bash -c 'bundle install && yarn && rails webpacker:install && rails db:migrate && rails db:setup'
+docker exec -it --user root ${NEW_RAILS_APP}_dev_1 /bin/sh -c 'bundle install && yarn && rails webpacker:install && rails db:migrate && rails db:setup'
 echo "Run: 'rails server -b 0.0.0.0' if you want to start up a server."
-docker exec -it ${NEW_RAILS_APP}_dev_1 /bin/bash
+docker exec -it ${NEW_RAILS_APP}_dev_1 /bin/sh
 
